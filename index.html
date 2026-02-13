@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💜</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(#5a189a, #ff4d8d);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Press Start 2P', cursive;
+  color: #fff;
+}
+
+.screen {
+  background: #2b0f45;
+  border: 6px solid #ff80bf;
+  padding: 20px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 0 20px #ff4d8d;
+  animation: pop 1.5s ease;
+}
+
+
+.flip-box {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 15px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.flip-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-front img,
+.flip-back img {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 10px #ff80bf);
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+.text-box {
+  background: #5a189a;
+  border: 4px solid #ff80bf;
+  padding: 10px;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.love {
+  margin-top: 10px;
+  color: #ffb3d9;
+}
+
+
+.controls {
+  margin-top: 10px;
+}
+
+.controls button {
+  background: #ff80bf;
+  border: none;
+  padding: 6px 8px;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 8px;
+  cursor: pointer;
+  color: #2b0f45;
+}
+
+.controls input[type="range"] {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.hint {
+  margin-top: 8px;
+  font-size: 8px;
+  color: #ff99cc;
+}
+
+@keyframes pop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+</style>
+</head>
+
+<body onclick="autoPlay()">
+
+<audio id="bgMusic"></audio>
+
+<div class="screen">
+
+
+  <div class="flip-box" onclick="flipImage(event)">
+    <div class="flip-inner" id="flipInner">
+      <div class="flip-front">
+        <img src="girl.png" alt="Her Pixel Art">
+      </div>
+      <div class="flip-back">
+        <img src="flower.png" alt="Pixel Flower">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="text-box">
+    <p>
+      I may not be around you,
+      but I hope this shiii
+      will make your day...or at least
+    </p>
+
+    <p class="love">
+      Happy Valentine’s Day 💖  
+      AAAA
+    </p>
+  </div>
+
+
+  <div class="controls">
+    <button onclick="prevTrack(event)">⏮</button>
+    <button onclick="toggleMusic(event)" id="playBtn">▶</button>
+    <button onclick="nextTrack(event)">⏭</button>
+
+    <input type="range" min="0" max="1" step="0.01" value="0.5" onchange="setVolume(this.value)">
+  </div>
+
+  <div class="hint">
+    Behind your picture is the flower :D
+  </div>
+
+</div>
+
+<script>
+const tracks = [
+  "music.mp3",
+  "music2.mp3",
+  "music3.mp3",
+  "music4.mp3",
+  "music5.mp3"
+];
+
+let currentTrack = 0;
+const music = document.getElementById("bgMusic");
+const playBtn = document.getElementById("playBtn");
+
+music.src = tracks[currentTrack];
+music.volume = 0.5;
+
+function autoPlay() {
+  music.play();
+  playBtn.textContent = "⏸";
+}
+
+function toggleMusic(event) {
+  event.stopPropagation();
+  if (music.paused) {
+    music.play();
+    playBtn.textContent = "⏸";
+  } else {
+    music.pause();
+    playBtn.textContent = "▶";
+  }
+}
+
+function nextTrack(event) {
+  event.stopPropagation();
+  currentTrack = (currentTrack + 1) % tracks.length;
+  music.src = tracks[currentTrack];
+  music.play();
+  playBtn.textContent = "⏸";
+}
+
+function prevTrack(event) {
+  event.stopPropagation();
+  currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+  music.src = tracks[currentTrack];
+  music.play();
+  playBtn.textContent = "⏸";
+}
+
+function setVolume(value) {
+  music.volume = value;
+}
+
+function flipImage(event) {
+  event.stopPropagation();
+  document.getElementById("flipInner").classList.toggle("flipped");
+}
+</script>
+
+</body>
+</html>
